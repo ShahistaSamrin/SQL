@@ -1,32 +1,40 @@
 <?php
-// Database connection parameters
+// Database configuration - update these as per your XAMPP setup
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "testdb";
+$dbname = "testdb";  // Change to your database name
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = htmlspecialchars($_POST['name']);
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Prepare and bind
-$stmt = $conn->prepare("INSERT INTO users (name, email) VALUES (?, ?)");
-$stmt->bind_param("ss", $name, $email);
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
 
-// Set parameters and execute
-$name = $_POST['name'];
-$email = $_POST['email'];
+    // Prepare and bind
+    $stmt = $conn->prepare("INSERT INTO names (name) VALUES (?)");
+    $stmt->bind_param("s", $name);
 
-if ($stmt->execute()) {
-    echo "New record created successfully.";
+    if ($stmt->execute()) {
+        echo "Hello, " . $name . "! Your form has been submitted and stored successfully.";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
+    $conn->close();
 } else {
-    echo "Error: " . $stmt->error;
+    echo "Invalid request method.";
 }
-
-$stmt->close();
-$conn->close();
+CREATE DATABASE IF NOT EXISTS testdb;
+USE testdb;
+CREATE TABLE IF NOT EXISTS names (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL
+);
 ?>
