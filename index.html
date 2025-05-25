@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Input Form</title>
+</head>
+<body>
+    <h1>User Input Form</h1>
+    <form id="userForm" action="submit.php" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required />
+        <button type="submit">Submit</button>
+    </form>
+    CREATE DATABASE IF NOT EXISTS testdb;
+USE testdb;
+CREATE TABLE IF NOT EXISTS names (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL
+);
+</body>
+</html>
